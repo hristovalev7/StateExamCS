@@ -100,7 +100,7 @@ $$\overline{A\cup B}=\overline{A}\cap\overline{B},\qquad \overline{A\cap B}=\ove
 **Защо тези закони:** има точно съответствие „множества ↔ логика“:
 - $\cup \leftrightarrow \lor$,
 - $\cap \leftrightarrow \land$,
-- $\overline{\phantom{A}} \leftrightarrow \neg$,
+- $\overline{\hspace{1em}} \leftrightarrow \neg$,
 - $\emptyset \leftrightarrow F$,
 - $U \leftrightarrow T$.
 
