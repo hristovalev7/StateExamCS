@@ -16,3 +16,5 @@
     ![](Sarrus/sarrus1.svg)
   - Сарус (разширение)
     ![](Sarrus/sarrus2.svg)
+  - Адюнгирани количества
+    ![](Sarrus/cofactor.svg)
