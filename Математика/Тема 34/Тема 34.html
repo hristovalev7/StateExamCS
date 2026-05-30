@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Итерационни методи за решаване на нелинейни уравнения</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+  :root{
+    --paper:#f6f1e7; --paper-2:#efe7d7; --ink:#221e17; --ink-2:#5d5648;
+    --line:#dcd3bf; --teal:#155e57; --teal-tint:#e7efec; --ochre:#9c6a1c;
+    --ochre-tint:#f5ebd6; --terra:#b1451d; --sage:#3f6e4d; --sage-tint:#e8f0e6;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Spectral",Georgia,"Times New Roman",serif;
+    font-size:18.5px; line-height:1.78;
+    background-image:radial-gradient(circle at 50% -10%, #fbf7ee 0%, var(--paper) 55%);
+  }
+  .wrap{max-width:790px; margin:0 auto; padding:54px 26px 96px;}
+  .kicker{font-family:"Fraunces",serif; font-weight:600; letter-spacing:.16em; text-transform:uppercase; font-size:12.5px; color:var(--terra);}
+  h1{font-family:"Fraunces",serif; font-weight:600; line-height:1.12; font-size:clamp(30px,5.4vw,46px); margin:.18em 0 .12em; color:var(--ink); letter-spacing:-.01em;}
+  .lede{font-size:19px; color:var(--ink-2); margin:.4em 0 0; max-width:62ch;}
+  .rule{height:2px; background:linear-gradient(90deg,var(--teal),transparent); margin:34px 0 6px; border:0;}
+  h2{font-family:"Fraunces",serif; font-weight:600; font-size:27px; line-height:1.2; margin:58px 0 6px; color:var(--teal); letter-spacing:-.005em; display:flex; align-items:baseline; gap:.5em;}
+  h2 .num{font-size:15px; font-weight:700; color:#fff; background:var(--teal); border-radius:6px; padding:2px 9px; flex:none; transform:translateY(-2px);}
+  h3{font-family:"Fraunces",serif; font-weight:600; font-size:20.5px; color:var(--ink); margin:34px 0 4px;}
+  p{margin:.7em 0;}
+  a{color:var(--teal);}
+  strong{font-weight:600;}
+  .small{font-size:15.5px; color:var(--ink-2);}
+  .box{border-radius:12px; padding:18px 22px 14px; margin:22px 0; position:relative;}
+  .box .tag{font-family:"Fraunces",serif; font-weight:700; font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; display:inline-block; margin-bottom:2px;}
+  .def{background:var(--teal-tint); border:1px solid #bcd6cf;}
+  .def .tag{color:var(--teal);}
+  .thm{background:var(--ochre-tint); border:1px solid #e4cf9f;}
+  .thm .tag{color:var(--ochre);}
+  .intu{background:var(--sage-tint); border:1px solid #c3d8c1;}
+  .intu .tag{color:var(--sage);}
+  .proof{border-left:3px solid var(--line); padding:2px 0 2px 20px; margin:18px 0; color:#3b362c;}
+  .proof .tag{font-family:"Fraunces",serif; font-weight:600; font-style:italic; color:var(--ink-2); font-size:16px; letter-spacing:0; text-transform:none;}
+  .qed{float:right; font-weight:700; color:var(--ink-2);}
+  ul,ol{margin:.6em 0; padding-left:1.3em;}
+  li{margin:.32em 0;}
+  figure{margin:26px 0; text-align:center;}
+  .fig-card{background:linear-gradient(180deg,#fcf9f1,var(--paper-2)); border:1px solid var(--line); border-radius:14px; padding:14px 10px 6px; box-shadow:0 1px 0 #fff inset, 0 6px 18px -14px rgba(40,30,10,.5);}
+  svg{display:block; margin:0 auto; max-width:100%; height:auto;}
+  figcaption{font-size:14.5px; color:var(--ink-2); font-style:italic; margin-top:8px; padding:0 8px;}
+  .svg-label{font-family:"Spectral",serif; font-style:italic; font-size:15px; fill:var(--ink-2);}
+  .svg-label.t{fill:var(--terra); font-style:normal; font-weight:500;}
+  .svg-label.c{fill:var(--teal); font-style:normal; font-weight:500;}
+  .svg-title{font-family:"Fraunces",serif; font-size:14px; font-weight:600; fill:var(--ink);}
+  .tbl-scroll{overflow-x:auto; margin:22px 0;}
+  table{border-collapse:collapse; width:100%; font-size:15.8px; min-width:560px;}
+  caption{caption-side:top; text-align:left; font-style:italic; color:var(--ink-2); margin-bottom:8px; font-size:15px;}
+  th,td{border-bottom:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top;}
+  thead th{font-family:"Fraunces",serif; color:var(--teal); border-bottom:2px solid var(--teal); font-size:15px;}
+  tbody tr:nth-child(odd){background:rgba(255,255,255,.4);}
+  .endnote{margin-top:60px; padding-top:18px; border-top:1px solid var(--line); font-size:14.5px; color:var(--ink-2);}
+  .katex{font-size:1.04em;}
+  .katex-display{margin:.9em 0; overflow-x:auto; overflow-y:hidden; padding:2px 0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="kicker">Числен анализ · Конспект</div>
+  <h1>Итерационни методи за решаване на&nbsp;нелинейни уравнения</h1>
+  <p class="lede">Как свеждаме $f(x)=0$ до търсене на неподвижна точка, защо някои итерации клонят, а други не, и откъде идва скоростта на методите на хордите, секущите и Нютон.</p>
+  <hr class="rule">
+  <p class="small">Искаме да решим $f(x)=0$. За повечето функции няма формула за корена, затова го <strong>намираме приближено</strong> чрез редица $x_0,x_1,x_2,\dots$, която строим по едно правило и за която се надяваме $x_n\to\xi$ (корена). Цялата теория по-долу отговаря на два въпроса: <strong>кога</strong> такава редица клони и <strong>колко бързо</strong>.</p>
+
+  <h2><span class="num">1</span> Неподвижна точка и свеждане на $f(x)=0$</h2>
+
+  <div class="box def">
+    <span class="tag">Определение · неподвижна точка</span>
+    <p style="margin:.3em 0">Точката $\xi$ е <strong>неподвижна точка</strong> на изображението $\varphi$, ако
+    $$\varphi(\xi)=\xi.$$
+    Това е стойност, която изображението <strong>не помества</strong>: приложиш ли $\varphi$ върху нея, получаваш същото число.</p>
+  </div>
+
+  <p><strong>Геометрия.</strong> Графиката на $y=\varphi(x)$ и правата $y=x$ (диагоналът на първи квадрант) се пресичат точно в неподвижните точки. Търсенето на неподвижна точка = търсене на пресечна точка с диагонала.</p>
+
+  <figure>
+    <div class="fig-card">
+      <svg viewBox="0 0 520 330" width="520" role="img" aria-label="Неподвижна точка като пресечна точка">
+        <line x1="60" y1="300" x2="510" y2="300" stroke="#8a8273" stroke-width="1.4"/>
+        <line x1="60" y1="300" x2="60" y2="40" stroke="#8a8273" stroke-width="1.4"/>
+        <polygon points="510,300 502,296 502,304" fill="#8a8273"/>
+        <polygon points="60,40 56,48 64,48" fill="#8a8273"/>
+        <text class="svg-label" x="498" y="318">x</text>
+        <text class="svg-label" x="40" y="50">y</text>
+        <line x1="60" y1="300" x2="450" y2="60" stroke="#5d5648" stroke-width="1.6" stroke-dasharray="2 4"/>
+        <text class="svg-label" x="428" y="58">y = x</text>
+        <path d="M60,232.8 Q285,185 510,136.8" fill="none" stroke="#155e57" stroke-width="2.6"/>
+        <text class="svg-label c" x="404" y="150">y = φ(x)</text>
+        <line x1="270" y1="188" x2="270" y2="300" stroke="#b1451d" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <line x1="270" y1="188" x2="60" y2="188" stroke="#b1451d" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <circle cx="270" cy="188" r="5" fill="#b1451d"/>
+        <text class="svg-label t" x="263" y="318">ξ</text>
+        <text class="svg-label t" x="12" y="193">φ(ξ)=ξ</text>
+      </svg>
+    </div>
+    <figcaption>Неподвижната точка $\xi$ е там, където кривата $y=\varphi(x)$ сече диагонала $y=x$. По вертикала и по хоризонтала се чете едно и също число — затова $\varphi(\xi)=\xi$.</figcaption>
+  </figure>
+
+  <div class="box thm">
+    <span class="tag">Теорема · съществуване</span>
+    <p style="margin:.3em 0">Ако $\varphi$ е <strong>непрекъснато</strong> изображение на $[a,b]$ <strong>в себе си</strong> (т.е. $\varphi([a,b])\subseteq[a,b]$), то $\varphi$ има <strong>поне една</strong> неподвижна точка в $[a,b]$.</p>
+  </div>
+
+  <div class="proof">
+    <span class="tag">Доказателство.</span>
+    <p style="margin:.4em 0">Разглеждаме спомагателната функция $g(x)=\varphi(x)-x$, непрекъсната в $[a,b]$. Понеже $\varphi$ изобразява интервала в себе си, стойностите $\varphi(a),\varphi(b)$ лежат в $[a,b]$, откъдето</p>
+    $$g(a)=\varphi(a)-a\ \ge\ 0,\qquad g(b)=\varphi(b)-b\ \le\ 0.$$
+    <p style="margin:.4em 0">Непрекъсната функция, която в единия край е $\ge 0$, а в другия $\le 0$, по <strong>теоремата на Болцано–Коши</strong> приема стойност нула в някоя точка $\xi\in[a,b]$. Тогава $g(\xi)=0$, т.е. $\varphi(\xi)=\xi$. (Ако $g(a)=0$ или $g(b)=0$, самият край е неподвижна точка.) <span class="qed">∎</span></p>
+  </div>
+
+  <div class="box intu">
+    <span class="tag">Интуиция</span>
+    <p style="margin:.3em 0">В лявия край кривата $y=\varphi(x)$ е <strong>над</strong> диагонала (защото $\varphi(a)\ge a$), а в десния — <strong>под</strong> него (защото $\varphi(b)\le b$). Непрекъсната крива, която тръгва над една права и завършва под нея, <strong>задължително я пресича</strong>. Това пресичане е неподвижната точка. Условието „в себе си“ е същественото — то приковава краищата спрямо диагонала.</p>
+  </div>
+
+  <h3>Свеждане на $f(x)=0$ към неподвижна точка</h3>
+  <p>Изборът на $\varphi$ е под наш контрол. За произволно $\lambda(x)\neq 0$ полагаме
+  $$\varphi(x)=x-\lambda(x)\,f(x).$$
+  Тогава $x=\varphi(x)\iff \lambda(x)f(x)=0\iff f(x)=0$. С други думи, <strong>корените на $f$ съвпадат точно с неподвижните точки на $\varphi$</strong>. Така задачата „намери корен на $f$“ се превръща в „намери неподвижна точка на $\varphi$“, която решаваме с итерациите $x_{n+1}=\varphi(x_n)$.</p>
+  <p>Важното: <strong>пренаписването не е единствено</strong>. Едно и също уравнение можем да запишем като $x=\varphi(x)$ по много начини, и те се държат коренно различно — една итерация клони към корена, друга се „пръска“ настрани. Кое работи решава следващата част.</p>
+
+  <h2><span class="num">2</span> Свиващи изображения (принцип на Банах)</h2>
+
+  <div class="box def">
+    <span class="tag">Определение · свиващо изображение</span>
+    <p style="margin:.3em 0">Непрекъснатата $\varphi$ е <strong>свиващо изображение</strong> на $[a,b]$ в себе си с <strong>константа на Липшиц</strong> $q\in(0,1)$, ако:</p>
+    $$\text{(1)}\quad \varphi([a,b])\subseteq[a,b],\qquad
+      \text{(2)}\quad |\varphi(x)-\varphi(y)|\le q\,|x-y|\ \ \forall x,y\in[a,b].$$
+    <p style="margin:.5em 0">Ако $\varphi\in C^1[a,b]$, по теоремата за крайните нараствания $|\varphi(x)-\varphi(y)|=|\varphi'(x^{*})|\,|x-y|$, откъдето (2) е равносилно на удобния за проверка критерий</p>
+    $$\text{(3)}\quad \max_{x\in[a,b]}|\varphi'(x)|\le q\lt1.$$
+  </div>
+
+  <div class="box intu">
+    <span class="tag">Интуиция</span>
+    <p style="margin:.3em 0">Свиващо = <strong>скъсяващо разстоянията</strong>. Вземеш ли кои да е две точки и приложиш $\varphi$, образите им са по-близки от оригиналите — поне $q$ пъти. Това „стискане“ е цялата причина итерациите да се събират към една-единствена точка: всяка стъпка свива оставащата грешка. На практика проверяваме (3): <strong>наклонът на $\varphi$ е навсякъде по модул под единица.</strong></p>
+  </div>
+
+  <div class="box thm">
+    <span class="tag">Теорема 1 · принцип на свиващото изображение</span>
+    <p style="margin:.3em 0">Нека $\varphi$ е непрекъснато свиващо изображение на $[a,b]$ в себе си с константа $q\in(0,1)$. Тогава:</p>
+    <p style="margin:.3em 0"><strong>а)</strong> уравнението $x=\varphi(x)$ има <strong>единствен</strong> корен $\xi\in[a,b]$;</p>
+    <p style="margin:.3em 0"><strong>б)</strong> за <strong>всяко</strong> начално приближение $x_0\in[a,b]$ редицата $x_{n+1}=\varphi(x_n)$ клони към $\xi$ при $n\to\infty$, при това</p>
+    $$|x_n-\xi|\ \le\ (b-a)\,q^{\,n}\qquad\text{за всяко }n.$$
+  </div>
+
+  <div class="proof">
+    <span class="tag">Доказателство.</span>
+    <p style="margin:.4em 0"><strong>Съществуване.</strong> Свиващото изображение е непрекъснато (от (2)) и изобразява $[a,b]$ в себе си, значи по теоремата от Част 1 има поне една неподвижна точка $\xi$.</p>
+    <p style="margin:.4em 0"><strong>Единственост.</strong> Ако $\xi$ и $\eta$ са две неподвижни точки, то
+    $$|\xi-\eta|=|\varphi(\xi)-\varphi(\eta)|\le q\,|\xi-\eta|\ \Rightarrow\ (1-q)\,|\xi-\eta|\le 0.$$
+    Понеже $1-q\gt0$, остава $|\xi-\eta|\le 0$, т.е. $\xi=\eta$.</p>
+    <p style="margin:.4em 0"><strong>Сходимост и оценка.</strong> Използвайки $\xi=\varphi(\xi)$ и свиването:
+    $$|x_n-\xi|=|\varphi(x_{n-1})-\varphi(\xi)|\le q\,|x_{n-1}-\xi|.$$
+    С индукция $|x_n-\xi|\le q^{\,n}|x_0-\xi|$. Тъй като $x_0,\xi\in[a,b]$, имаме $|x_0-\xi|\le b-a$, откъдето
+    $$|x_n-\xi|\le (b-a)\,q^{\,n}\xrightarrow[n\to\infty]{}0,$$
+    защото $0\lt q\lt1$. Значи $x_n\to\xi$. <span class="qed">∎</span></p>
+  </div>
+
+  <div class="box intu">
+    <span class="tag">Интуиция</span>
+    <p style="margin:.3em 0">Грешката се умножава по $q\lt1$ на всяка стъпка. След $n$ стъпки е умножена $n$ пъти — оттам множителят $q^{\,n}$, който клони геометрично към нула. Това е <strong>сходимост със скоростта на геометрична прогресия</strong>. Бонус: оценката $(b-a)q^{\,n}$ е <strong>априорна</strong> — преди да сметнем каквото и да е, знаем колко итерации стигат за дадена точност.</p>
+  </div>
+
+  <div class="box thm">
+    <span class="tag">Следствие · локална сходимост</span>
+    <p style="margin:.3em 0">Нека $\xi$ е корен на $x=\varphi(x)$ и $\varphi$ има непрекъсната производна в околност $U$ на $\xi$, за която $|\varphi'(\xi)|\lt1$. Тогава при достатъчно добро начално приближение $x_0$ итерационният процес клони към $\xi$ <strong>със скоростта на геометрична прогресия</strong>.</p>
+  </div>
+
+  <div class="proof">
+    <span class="tag">Доказателство (идея).</span>
+    <p style="margin:.4em 0">Понеже $\varphi'$ е непрекъсната и $|\varphi'(\xi)|\lt1$, изберем число $q$ с $|\varphi'(\xi)|\lt q\lt1$. Тогава съществува малка околност $[\xi-\delta,\xi+\delta]\subset U$, в която $|\varphi'(x)|\le q$. В нея $\varphi$ е свиваща, а и я <strong>изобразява в себе си</strong>: за $|x-\xi|\le\delta$
+    $$|\varphi(x)-\xi|=|\varphi(x)-\varphi(\xi)|\le q\,|x-\xi|\le q\delta\lt\delta.$$
+    Прилагаме Теорема 1 върху $[\xi-\delta,\xi+\delta]$ — за всяко $x_0$ оттам имаме геометрична сходимост. <span class="qed">∎</span></p>
+  </div>
+
+  <p><strong>Защо $\varphi'(\xi)$ управлява всичко.</strong> Числото $\varphi'(\xi)$ е „местният коефициент на разтягане“ около неподвижната точка. Развитие на Тейлър за грешката $e_n=x_n-\xi$ дава
+  $$e_{n+1}=\varphi(x_n)-\varphi(\xi)=\varphi'(\xi)\,e_n+\tfrac12\varphi''(\xi)\,e_n^2+\cdots$$
+  Оттук:</p>
+  <ul>
+    <li>$|\varphi'(\xi)|\lt1$ — <strong>привличаща</strong> (устойчива) неподвижна точка: итерациите се събират към $\xi$.</li>
+    <li>$|\varphi'(\xi)|\gt1$ — <strong>отблъскваща</strong>: итерациите бягат, колкото и близо да започнеш.</li>
+    <li>$0\lt\varphi'(\xi)\lt1$ — сходимост <strong>отстрани, монотонно</strong> (стълбичка).</li>
+    <li>$-1\lt\varphi'(\xi)\lt0$ — сходимост <strong>с трептене</strong> около корена (спирала).</li>
+  </ul>
+
+  <figure>
+    <div class="fig-card">
+      <svg viewBox="0 0 760 360" width="760" role="img" aria-label="Паяжинни диаграми">
+        <text class="svg-title" x="40" y="20">а)  0 &lt; φ′(ξ) &lt; 1  —  стълбичка</text>
+        <line x1="40" y1="320" x2="350" y2="320" stroke="#8a8273" stroke-width="1.3"/>
+        <line x1="40" y1="320" x2="40" y2="30" stroke="#8a8273" stroke-width="1.3"/>
+        <line x1="40" y1="320" x2="340" y2="30" stroke="#5d5648" stroke-width="1.3" stroke-dasharray="2 4"/>
+        <text class="svg-label" x="300" y="44">y=x</text>
+        <line x1="40" y1="230" x2="340" y2="80" stroke="#155e57" stroke-width="2.4"/>
+        <text class="svg-label c" x="250" y="118">φ(x)</text>
+        <polyline fill="none" stroke="#b1451d" stroke-width="1.7" points="70,320 70,215 145,215 145,177.5 182.5,177.5 182.5,158.75 201.25,158.75 220,140"/>
+        <circle cx="220" cy="140" r="4.5" fill="#b1451d"/>
+        <text class="svg-label t" x="226" y="135">ξ</text>
+        <text class="svg-label t" x="62" y="336">x₀</text>
+
+        <text class="svg-title" x="440" y="20">б)  −1 &lt; φ′(ξ) &lt; 0  —  спирала</text>
+        <line x1="440" y1="320" x2="750" y2="320" stroke="#8a8273" stroke-width="1.3"/>
+        <line x1="440" y1="320" x2="440" y2="30" stroke="#8a8273" stroke-width="1.3"/>
+        <line x1="440" y1="320" x2="740" y2="30" stroke="#5d5648" stroke-width="1.3" stroke-dasharray="2 4"/>
+        <text class="svg-label" x="700" y="44">y=x</text>
+        <line x1="440" y1="32" x2="740" y2="212" stroke="#155e57" stroke-width="2.4"/>
+        <text class="svg-label c" x="690" y="198">φ(x)</text>
+        <polyline fill="none" stroke="#b1451d" stroke-width="1.7" points="485,320 485,59 701,59 701,188.6 571.4,188.6 571.4,110.84 649.16,110.84 649.16,157.5 620,140"/>
+        <circle cx="620" cy="140" r="4.5" fill="#b1451d"/>
+        <text class="svg-label t" x="626" y="135">ξ</text>
+        <text class="svg-label t" x="477" y="336">x₀</text>
+      </svg>
+    </div>
+    <figcaption>Паяжинна (cobweb) диаграма: качваш се вертикално до кривата $\varphi$, после хоризонтално до диагонала — и повтаряш. Знакът на $\varphi'(\xi)$ решава дали се изкачваш гладко по стълбичка (ляво) или обикаляш в спирала (дясно). И в двата случая $|\varphi'(\xi)|\lt1$ те „завинтва“ към $\xi$.</figcaption>
+  </figure>
+
+  <div class="box def">
+    <span class="tag">Определение · ред на сходимост</span>
+    <p style="margin:.3em 0">Редица $x_n\to\xi$ има <strong>ред на сходимост</strong> $p\ (\ge 1)$, ако съществува крайна константа $C\gt0$ с
+    $$\lim_{n\to\infty}\frac{|x_{n+1}-\xi|}{|x_n-\xi|^{\,p}}=C.$$
+    Тоест грешката на следващата стъпка е $\approx C\cdot(\text{предишна грешка})^{p}$.</p>
+  </div>
+
+  <div class="box intu">
+    <span class="tag">Интуиция · какво значи редът на практика</span>
+    <ul style="margin:.3em 0">
+      <li><strong>$p=1$ (линеен), $0\lt C\lt1$:</strong> всяка стъпка отрязва грешката с постоянен множител — печелиш <strong>фиксиран брой</strong> верни цифри на итерация. Това е „геометричната прогресия“ от Теорема 1; за проста итерация $C=|\varphi'(\xi)|$.</li>
+      <li><strong>$p=2$ (квадратичен):</strong> грешката се вдига на квадрат — <strong>броят верни цифри се удвоява</strong> на всяка стъпка. Стремглаво бързо (методът на Нютон).</li>
+      <li><strong>$1\lt p\lt2$ (свръхлинеен):</strong> между двете — методът на секущите, с $p=\tfrac{1+\sqrt5}{2}\approx1.618$.</li>
+    </ul>
+    <p style="margin:.4em 0">От развитието на Тейлър по-горе: ако $\varphi'(\xi)\ne0$ — редът е $1$; ако $\varphi'(\xi)=0$ (но $\varphi''(\xi)\ne0$) — редът скача на $2$. <strong>Точно затова Нютон е бърз: неговата $\varphi$ е нагласена така, че $\varphi'(\xi)=0$.</strong></p>
+  </div>
+
+  <h2><span class="num">3</span> Методи на хордите, секущите и Нютон</h2>
+
+  <p>Тук $f$ е „добра“ в малък интервал $[a,b]$ около изолиран корен $\xi$: има смяна на знака $f(a)f(b)\lt0$, а $f'$ и $f''$ запазват знак (т.е. $f$ е монотонна и изпъкнала/вдлъбната). И трите метода заменят кривата $f$ с <strong>права линия</strong> и взимат за следващо приближение пресечната ѝ точка с оста $Ox$ — разликата е <strong>коя</strong> права.</p>
+
+  <h3>Метод на хордите</h3>
+  <p><strong>Идея/геометрия.</strong> Единият край на интервала се <strong>фиксира</strong> — това е краят $c$, в който $f(c)\cdot f''(c)\gt0$ (същият знак). Прекарваме <strong>хорда</strong> от неподвижната точка $\big(c,f(c)\big)$ до текущата $\big(x_n,f(x_n)\big)$ и взимаме пресичането ѝ с оста.</p>
+  <p><strong>Формула.</strong></p>
+  $$x_{n+1}=x_n-\frac{f(x_n)\,(x_n-c)}{f(x_n)-f(c)},\qquad n=0,1,2,\dots$$
+  <p class="small">($x_0$ е другият — подвижният — край.) <strong>Ред на сходимост: $p=1$ (линеен, геометрична прогресия).</strong> Бавен, но изключително надежден и не иска производна.</p>
+
+  <figure>
+    <div class="fig-card">
+      <svg viewBox="0 0 560 360" width="560" role="img" aria-label="Метод на хордите">
+        <line x1="70" y1="250" x2="540" y2="250" stroke="#8a8273" stroke-width="1.3"/>
+        <polygon points="540,250 532,246 532,254" fill="#8a8273"/>
+        <text class="svg-label" x="528" y="268">x</text>
+        <path d="M70,325 Q150,308 216.7,295 T301.9,250 Q400,205 510,55" fill="none" stroke="#155e57" stroke-width="2.6"/>
+        <text class="svg-label c" x="466" y="78">y=f(x)</text>
+        <circle cx="510" cy="55" r="4.5" fill="#221e17"/>
+        <text class="svg-label" x="474" y="46">B=(c,f(c))</text>
+        <line x1="143.3" y1="317.5" x2="510" y2="55" stroke="#b1451d" stroke-width="1.6"/>
+        <line x1="237.6" y1="285.8" x2="510" y2="55" stroke="#b1451d" stroke-width="1.6" stroke-dasharray="5 3"/>
+        <circle cx="143.3" cy="317.5" r="3.6" fill="#b1451d"/>
+        <circle cx="237.6" cy="285.8" r="3.6" fill="#b1451d"/>
+        <line x1="143.3" y1="250" x2="143.3" y2="317.5" stroke="#b9b09a" stroke-width="1" stroke-dasharray="2 3"/>
+        <line x1="237.6" y1="250" x2="237.6" y2="285.8" stroke="#b9b09a" stroke-width="1" stroke-dasharray="2 3"/>
+        <circle cx="143.3" cy="250" r="2.6" fill="#221e17"/>
+        <circle cx="237.6" cy="250" r="2.6" fill="#221e17"/>
+        <circle cx="279.9" cy="250" r="2.6" fill="#221e17"/>
+        <circle cx="301.9" cy="250" r="4.5" fill="#b1451d"/>
+        <text class="svg-label" x="135" y="268">x₀</text>
+        <text class="svg-label" x="231" y="268">x₁</text>
+        <text class="svg-label" x="273" y="268">x₂</text>
+        <text class="svg-label t" x="300" y="232">ξ</text>
+        <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#b1451d"/></marker></defs>
+        <path d="M150,240 L292,240" stroke="#b1451d" stroke-width="1" marker-end="url(#ah)"/>
+      </svg>
+    </div>
+    <figcaption>Неподвижният край $B=(c,f(c))$ стои. Всяка хорда от $B$ до текущата точка реже оста малко по-близо до $\xi$ — приближенията $x_0,x_1,x_2,\dots$ настъпват <strong>монотонно</strong> от едната страна. Понеже наклонът на $\varphi$ не е нула в $\xi$, печалбата на стъпка е постоянна → линейна сходимост.</figcaption>
+  </figure>
+
+  <h3>Метод на секущите</h3>
+  <p><strong>Идея/геометрия.</strong> Никой край не се фиксира — прекарваме секуща през <strong>двете последни</strong> приближения $\big(x_{n-1},f(x_{n-1})\big)$ и $\big(x_n,f(x_n)\big)$ и взимаме пресичането ѝ с оста.</p>
+  <p><strong>Формула.</strong></p>
+  $$x_{n+1}=x_n-\frac{f(x_n)\,(x_n-x_{n-1})}{f(x_n)-f(x_{n-1})},\qquad n=1,2,\dots$$
+  <p class="small">Нужни са <strong>две</strong> начални приближения $x_0,x_1$ (избират се с $f(x_i)f''(x_i)\gt0$). <strong>Ред на сходимост: $p=\tfrac{1+\sqrt5}{2}\approx1.618$ (свръхлинеен).</strong> Не иска производна, а е почти толкова бърз, колкото Нютон.</p>
+
+  <figure>
+    <div class="fig-card">
+      <svg viewBox="0 0 560 360" width="560" role="img" aria-label="Метод на секущите">
+        <line x1="70" y1="250" x2="540" y2="250" stroke="#8a8273" stroke-width="1.3"/>
+        <polygon points="540,250 532,246 532,254" fill="#8a8273"/>
+        <text class="svg-label" x="528" y="268">x</text>
+        <path d="M70,325 Q150,308 216.7,295 T301.9,250 Q400,205 510,55" fill="none" stroke="#155e57" stroke-width="2.6"/>
+        <text class="svg-label c" x="466" y="78">y=f(x)</text>
+        <line x1="436.7" y1="137.5" x2="314.4" y2="250" stroke="#b1451d" stroke-width="1.7"/>
+        <circle cx="436.7" cy="137.5" r="3.6" fill="#b1451d"/>
+        <circle cx="363.3" cy="205" r="3.6" fill="#b1451d"/>
+        <line x1="436.7" y1="250" x2="436.7" y2="137.5" stroke="#b9b09a" stroke-width="1" stroke-dasharray="2 3"/>
+        <line x1="363.3" y1="250" x2="363.3" y2="205" stroke="#b9b09a" stroke-width="1" stroke-dasharray="2 3"/>
+        <circle cx="436.7" cy="250" r="2.6" fill="#221e17"/>
+        <circle cx="363.3" cy="250" r="2.6" fill="#221e17"/>
+        <circle cx="314.4" cy="250" r="2.6" fill="#221e17"/>
+        <circle cx="301.9" cy="250" r="4.5" fill="#b1451d"/>
+        <text class="svg-label" x="429" y="268">x₀</text>
+        <text class="svg-label" x="356" y="268">x₁</text>
+        <text class="svg-label" x="305" y="270">x₂</text>
+        <text class="svg-label t" x="284" y="240">ξ</text>
+      </svg>
+    </div>
+    <figcaption>Секущата през последните две точки реже оста в $x_2$ — после „забравяме“ най-старата точка и повтаряме с $\{x_1,x_2\}$. Наклонът на правата <strong>сам се настройва</strong> към наклона на кривата, затова е почти толкова бърз, колкото Нютон, без да смята $f'$.</figcaption>
+  </figure>
+
+  <h3>Метод на Нютон (на допирателните)</h3>
+  <p><strong>Идея/геометрия.</strong> Заменяме кривата с <strong>допирателната</strong> в текущата точка $\big(x_n,f(x_n)\big)$ и взимаме пресичането ѝ с оста. (Това е граничният случай на секущата, когато двете точки се слеят: секущата → допирателна.)</p>
+  <p><strong>Формула.</strong></p>
+  $$x_{n+1}=x_n-\frac{f(x_n)}{f'(x_n)},\qquad n=0,1,2,\dots$$
+  <p class="small">$x_0$ се избира откъм края с $f(x_0)f''(x_0)\gt0$. <strong>Ред на сходимост: $p=2$ (квадратичен)</strong> при прост корен ($f'(\xi)\ne0$). Най-бърз, но иска $f'(x_n)$ на всяка стъпка.</p>
+
+  <figure>
+    <div class="fig-card">
+      <svg viewBox="0 0 560 360" width="560" role="img" aria-label="Метод на Нютон">
+        <line x1="70" y1="250" x2="540" y2="250" stroke="#8a8273" stroke-width="1.3"/>
+        <polygon points="540,250 532,246 532,254" fill="#8a8273"/>
+        <text class="svg-label" x="528" y="268">x</text>
+        <path d="M70,325 Q150,308 216.7,295 T301.9,250 Q400,205 510,55" fill="none" stroke="#155e57" stroke-width="2.6"/>
+        <text class="svg-label c" x="466" y="78">y=f(x)</text>
+        <line x1="480.7" y1="92.5" x2="326.7" y2="250" stroke="#b1451d" stroke-width="1.7"/>
+        <line x1="340.9" y1="223" x2="303" y2="250" stroke="#b1451d" stroke-width="1.7" stroke-dasharray="5 3"/>
+        <circle cx="436.7" cy="137.5" r="3.6" fill="#b1451d"/>
+        <circle cx="326.7" cy="233.1" r="3.6" fill="#b1451d"/>
+        <line x1="436.7" y1="250" x2="436.7" y2="137.5" stroke="#b9b09a" stroke-width="1" stroke-dasharray="2 3"/>
+        <line x1="326.7" y1="250" x2="326.7" y2="233.1" stroke="#b9b09a" stroke-width="1" stroke-dasharray="2 3"/>
+        <circle cx="436.7" cy="250" r="2.6" fill="#221e17"/>
+        <circle cx="326.7" cy="250" r="2.6" fill="#221e17"/>
+        <circle cx="301.9" cy="250" r="4.5" fill="#b1451d"/>
+        <text class="svg-label" x="429" y="268">x₀</text>
+        <text class="svg-label" x="328" y="270">x₁</text>
+        <text class="svg-label t" x="284" y="240">ξ</text>
+      </svg>
+    </div>
+    <figcaption>Допирателната в $x_n$ реже оста в $x_{n+1}$. Тя „усеща“ накъде завива кривата (чрез $f'$), затова прескача право към корена — броят верни цифри се удвоява на стъпка.</figcaption>
+  </figure>
+
+  <div class="box intu">
+    <span class="tag">Връзка с Част 2 — защо точно тези редове</span>
+    <p style="margin:.3em 0">Всеки метод е проста итерация $x_{n+1}=\varphi(x_n)$ за подходяща $\varphi$:</p>
+    <ul style="margin:.3em 0">
+      <li><strong>Нютон:</strong> $\varphi(x)=x-\dfrac{f(x)}{f'(x)}$, откъдето $\varphi'(x)=\dfrac{f(x)\,f''(x)}{f'(x)^2}$. В корена $f(\xi)=0\Rightarrow\varphi'(\xi)=0$ → редът е $2$.</li>
+      <li><strong>Хорди:</strong> $\varphi(x)=x-\dfrac{f(x)(x-c)}{f(x)-f(c)}$ има $0\le\varphi'(\xi)\lt1$ (виж доказателството по-долу) → ред $1$.</li>
+    </ul>
+  </div>
+
+  <div class="box thm">
+    <span class="tag">Твърдение · хордите клонят геометрично</span>
+    <p style="margin:.3em 0">При метода на хордите, ако коренът е изолиран в достатъчно <strong>малък</strong> интервал $[a,b]$ (с $f',f''$ непрекъснати и $f'\ne0$ там), сходимостта е със скоростта на геометрична прогресия:
+    $$|x_n-\xi|\le q^{\,n}\,(b-a),\qquad q\in(0,1).$$</p>
+  </div>
+
+  <div class="proof">
+    <span class="tag">Доказателство.</span>
+    <p style="margin:.4em 0">Нека $e_n=x_n-\xi$. От формулата на хордите и $f(\xi)=0$:
+    $$e_{n+1}=e_n-\frac{f(x_n)\,(x_n-c)}{f(x_n)-f(c)}.$$
+    Прилагаме теоремата за крайните нараствания (на Лагранж) на две места:
+    $$f(x_n)=f(x_n)-f(\xi)=f'(\eta_n)\,(x_n-\xi)=f'(\eta_n)\,e_n,\qquad \eta_n\in(\,\xi,x_n\,),$$
+    $$f(x_n)-f(c)=f'(\zeta_n)\,(x_n-c),\qquad \zeta_n\in(\,c,x_n\,).$$
+    Заместваме — множителят $(x_n-c)$ се съкращава:
+    $$\frac{f(x_n)(x_n-c)}{f(x_n)-f(c)}=\frac{f'(\eta_n)\,e_n\,(x_n-c)}{f'(\zeta_n)\,(x_n-c)}=\frac{f'(\eta_n)}{f'(\zeta_n)}\,e_n.$$
+    Следователно
+    $$e_{n+1}=e_n\left(1-\frac{f'(\eta_n)}{f'(\zeta_n)}\right).$$
+    Сега оценяваме множителя. Понеже $\eta_n,\zeta_n\in[a,b]$ и $f'$ е с постоянен знак, отношението $f'(\eta_n)/f'(\zeta_n)\gt0$. Полагаме
+    $$M=\max_{[a,b]}|f''|,\qquad m=\min_{[a,b]}|f'|\gt0.$$
+    Тогава (отново по Лагранж за $f'$)
+    $$\left|1-\frac{f'(\eta_n)}{f'(\zeta_n)}\right|=\frac{|f'(\zeta_n)-f'(\eta_n)|}{|f'(\zeta_n)|}\le\frac{M\,|\zeta_n-\eta_n|}{m}\le\frac{M\,(b-a)}{m}=:q.$$
+    Ако интервалът е достатъчно <strong>малък</strong>, то $q=\dfrac{M(b-a)}{m}\lt1$ (при $b-a\to0$ имаме $M(b-a)\to0$, а $m\to|f'(\xi)|\gt0$). Тогава $|e_{n+1}|\le q\,|e_n|$, откъдето с индукция
+    $$|x_n-\xi|=|e_n|\le q^{\,n}|e_0|\le q^{\,n}(b-a)\xrightarrow[n\to\infty]{}0.$$
+    Това е сходимост със скоростта на геометрична прогресия. <span class="qed">∎</span></p>
+  </div>
+
+  <p class="small">Забележка: ключовото равенство $e_{n+1}=e_n\big(1-\tfrac{f'(\eta_n)}{f'(\zeta_n)}\big)$ показва и <strong>защо</strong> редът е точно $1$ — множителят клони към константа $\varphi'(\xi)\in(0,1)$, не към нула.</p>
+
+  <h2><span class="num">★</span> Бърза справка</h2>
+  <div class="tbl-scroll">
+    <table>
+      <caption>Трите метода едно до друго ($M=\max|f''|,\ m=\min|f'|$ върху интервала).</caption>
+      <thead>
+        <tr><th>Метод</th><th>Формула</th><th>Ред $p$</th><th>Иска $f'$?</th><th>Оценка / критерий за спиране</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Хорди</strong></td>
+          <td>$x_{n+1}=x_n-\dfrac{f(x_n)(x_n-c)}{f(x_n)-f(c)}$</td>
+          <td>$1$</td>
+          <td>не</td>
+          <td>априорно $(b-a)q^{n}$</td>
+        </tr>
+        <tr>
+          <td><strong>Секущи</strong></td>
+          <td>$x_{n+1}=x_n-\dfrac{f(x_n)(x_n-x_{n-1})}{f(x_n)-f(x_{n-1})}$</td>
+          <td>$\tfrac{1+\sqrt5}{2}\!\approx\!1.62$</td>
+          <td>не</td>
+          <td>$|x_{n+1}-\xi|\le\tfrac{M}{2m}|x_{n+1}-x_n||x_{n+1}-x_{n-1}|$</td>
+        </tr>
+        <tr>
+          <td><strong>Нютон</strong></td>
+          <td>$x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$</td>
+          <td>$2$</td>
+          <td>да</td>
+          <td>$|x_{n+1}-\xi|\le\tfrac{M}{2m}(x_{n+1}-x_n)^2$</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small">Илюстрация от упражненията: за един и същ корен методът на хордите искаше около 40 итерации, секущите — 6, Нютон — 5. <strong>Комбинираният метод Нютон–хорди</strong> (Нютон от края с $f\!\cdot\!f''\gt0$, хорди от другия) държи корена <strong>заклещен</strong> между двете последни приближения, тъй че няма нужда от априорни оценки за производните.</p>
+
+  <p style="margin-top:30px"><strong>Нишката накратко.</strong> $f(x)=0$ ⇒ пренаписваме като неподвижна точка $x=\varphi(x)$. Ако $\varphi$ свива (достатъчно е локално $|\varphi'(\xi)|\lt1$), итерациите $x_{n+1}=\varphi(x_n)$ клонят със скоростта на геометрична прогресия. Хордите, секущите и Нютон са просто <strong>конкретни</strong> избори на $\varphi$ — а скоростта им се чете направо от $\varphi'(\xi)$: за Нютон $\varphi'(\xi)=0$, затова е квадратичен.</p>
+
+  <div class="endnote">Означенията следват курса по Числен анализ (лекции на Г. Николов, ФМИ–СУ): дефиницията на свиващо изображение, Теорема 1, формулите за хордите/секущите/Нютон и константата $M/(2m)$ в оценките са оттам.</div>
+
+</div>
+
+<script>
+  window.addEventListener("load", function () {
+    if (window.renderMathInElement) {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "$", right: "$", display: false}
+        ],
+        ignoredTags: ["script","noscript","style","textarea","pre","svg"],
+        throwOnError: false
+      });
+    }
+  });
+</script>
+</body>
+</html>
