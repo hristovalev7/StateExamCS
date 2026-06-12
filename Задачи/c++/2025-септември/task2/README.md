@@ -64,6 +64,7 @@ void removeIf(node*& from, const node* what) {
 node* merge(node* first, node* second) {
   node* head = nullptr;
   node* tail = nullptr;
+
   while (first && second) {
     node* chosen = nullptr;
 
