@@ -1,11 +1,11 @@
+#include <stdexcept>
+
 class Queue {
     struct Node {
         int value;
         Node* next;
 
-        Node(int value, Node* next) :
-            value(value), next(next) {
-        }
+        Node(int value, Node* next) : value(value), next(next) {}
     };
 
     Node* first;
@@ -28,12 +28,9 @@ class Queue {
     }
 
 public:
-    Queue() :
-        first(nullptr), last(nullptr) {
-    }
+    Queue() : first(nullptr), last(nullptr) {}
 
-    Queue(const Queue& other) :
-        first(nullptr), last(nullptr) {
+    Queue(const Queue& other) : first(nullptr), last(nullptr) {
         copy(other.first);
     }
 
@@ -49,18 +46,25 @@ public:
         deallocate();
     }
 
-    bool isEmpty() const {
+    bool isEmpty() const { // O(1)
         return first == nullptr;
     }
 
-    int getHead() const {
+    int getHead() const { // O(1)
         if (isEmpty()) {
             throw std::runtime_error("Cannot get the first element of an empty queue");
         }
         return first->value;
     }
 
-    void enqueue(int x) {
+    int getLast() const { // O(1)
+        if (isEmpty()) {
+            throw std::runtime_error("Cannot get the last element of an empty queue");
+        }
+        return last->value;
+    }
+
+    void enqueue(int x) { // O(1)
         Node* newNode = new Node(x, nullptr);
         if (isEmpty()) {
             first = newNode;
@@ -71,7 +75,7 @@ public:
         last = newNode;
     }
 
-    int dequeue() {
+    int dequeue() { // O(1)
         if (isEmpty()) {
             throw std::runtime_error("Cannot dequeue from an empty queue");
         }
