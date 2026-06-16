@@ -13,7 +13,7 @@
 
 (define (foldl op nv lst)
   (cond ((null? lst) nv)
-        (else (foldl op (op (car lst) nv) (cdr lst)))))
+        (else (foldl op (op nv (car lst)) (cdr lst)))))
 
 (define (foldr op nv lst)
   (cond ((null? lst) nv)
