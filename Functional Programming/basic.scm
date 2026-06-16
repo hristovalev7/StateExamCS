@@ -9,7 +9,7 @@
 (define (filter2 p lst)
   (cond ((null? lst) lst)
         ((p (car lst)) (cons (car lst) (filter2 p (cdr lst))))
-        ((not (p (car lst))) (filter2 p (cdr lst)))))
+        (else (filter2 p (cdr lst)))))
 
 (define (foldl op nv lst)
   (cond ((null? lst) nv)
