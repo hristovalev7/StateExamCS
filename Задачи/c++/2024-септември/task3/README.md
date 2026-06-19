@@ -179,3 +179,46 @@ node<Type>* sort(node<Type>* first) {
 3. **sort()** - рекурсивно разделя списъка на две половини, сортира ги и ги слива
 
 Merge Sort отговаря на изискването за асимптотична сложност по-добра от O(n²).
+
+---
+
+### Алтернативно решение (Insertion Sort - O(n²)):
+
+```cpp
+template <typename Type>
+node<Type>* sort(node<Type>* first) {
+  node<Type>* sortedList = nullptr;
+  node<Type>* curr = nullptr;
+
+  while (first) {
+    curr = first;
+    first = first->next;
+
+    // it's the smallest one so far → place it first
+    if (sortedList == nullptr || curr->data <= sortedList->data) {
+      curr->next = sortedList;
+      sortedList = curr;
+    } else {  // walk along the sorted part to find where it fits
+      node<Type>* iter = sortedList;
+      while (iter->next != nullptr && iter->next->data < curr->data) {
+        iter = iter->next;
+      }
+
+      curr->next = iter->next;
+      iter->next = curr;
+    }
+  }
+  return sortedList;
+}
+```
+
+**Алгоритъм:** Insertion Sort (сортиране чрез вмъкване)
+
+**Времева сложност:**
+- Най-лош случай: O(n²)
+- Среден случай: O(n²)
+- Най-добър случай: O(n) - когато списъкът е вече сортиран
+
+**Сложност по памет:** O(1) - константна допълнителна памет
+
+**Забележка:** Това решение НЕ отговаря на изискването за сложност по-добра от O(n²), но е по-просто за имплементация и използва константна памет.

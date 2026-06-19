@@ -49,7 +49,7 @@ node<Type>* filter(node<Type>* first) {
   return first;
 }
 
-// в) Сортиране на списък (Merge Sort)
+// в) Сортиране на списък (Merge Sort - O(n log n))
 template <typename Type>
 node<Type>* findMiddle(node<Type>* first) {
   node<Type>* slow = first;
@@ -98,4 +98,31 @@ node<Type>* sort(node<Type>* first) {
   node<Type>* right = sort(secondHalf);
 
   return merge(left, right);
+}
+
+// в) Алтернативно сортиране (Insertion Sort - O(n²))
+template <typename Type>
+node<Type>* sortInsertionSort(node<Type>* first) {
+  node<Type>* sortedList = nullptr;
+  node<Type>* curr = nullptr;
+
+  while (first) {
+    curr = first;
+    first = first->next;
+
+    // it's the smallest one so far → place it first
+    if (sortedList == nullptr || curr->data <= sortedList->data) {
+      curr->next = sortedList;
+      sortedList = curr;
+    } else {  // walk along the sorted part to find where it fits
+      node<Type>* iter = sortedList;
+      while (iter->next != nullptr && iter->next->data < curr->data) {
+        iter = iter->next;
+      }
+
+      curr->next = iter->next;
+      iter->next = curr;
+    }
+  }
+  return sortedList;
 }
