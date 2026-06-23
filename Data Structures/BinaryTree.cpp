@@ -49,10 +49,12 @@ public:
         deallocate(root);
     }
 
+    // O(1)
     bool isEmpty() const {
         return root == nullptr;
     }
 
+    // O(1)
     int getRootValue() const {
         if (isEmpty()) {
             throw std::runtime_error("Cannot take the root of an empty tree");
@@ -61,6 +63,7 @@ public:
         return root->value;
     }
 
+    // O(n)
     BinaryTree getLeftSubtree() const {
         if (isEmpty()) {
             throw std::runtime_error("Cannot take the left subtree of an empty tree");
@@ -69,7 +72,7 @@ public:
         return BinaryTree(root->left);
     }
 
-
+    // O(n)
     BinaryTree getRightSubtree() const {
         if (isEmpty()) {
             throw std::runtime_error("Cannot take the right subtree of an empty tree");

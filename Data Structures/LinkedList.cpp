@@ -57,7 +57,8 @@ public:
         deallocate();
     }
 
-    void insertLast(int x) { // O(1)
+    // O(1)
+    void insertLast(int x) {
         if (isEmpty()) {
             emptyInsert(x);
             return;
@@ -67,7 +68,8 @@ public:
         last = newLast;
     }
 
-    void insertFirst(int x) { // O(1)
+    // O(1)
+    void insertFirst(int x) {
         if (isEmpty()) {
             emptyInsert(x);
             return;
@@ -76,7 +78,8 @@ public:
         first = newFirst;
     }
 
-    void removeFirst() { // O(1)
+    // O(1)
+    void removeFirst() {
         if (isEmpty()) {
             return;
         }
@@ -89,7 +92,8 @@ public:
         first = newFirst;
     }
 
-    void removeLast() { // O(n), но ако е doubly linked може за O(1)
+    // O(n), но ако е doubly linked може за O(1)
+    void removeLast() {
         if (isEmpty()) {
             return;
         }
@@ -106,7 +110,8 @@ public:
         last = current;
     }
 
-    bool contains(int x) const { // O(n)
+    // O(n)
+    bool contains(int x) const {
         for (Node* current = first; current != nullptr; current = current->next) {
             if (current->value == x) {
                 return true;

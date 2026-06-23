@@ -59,12 +59,14 @@ public:
         deallocate();
     }
 
-    void push(int x) { // O(1)
+    // O(1)
+    void push(int x) {
         Node* newFirst = new Node(x, first);
         first = newFirst;
     }
 
-    int pop() { // O(1)
+    // O(1)
+    int pop() {
         if (isEmpty()) {
             throw std::runtime_error("Cannot pop from an empty stack");
         }
@@ -76,7 +78,8 @@ public:
         return poppedValue;
     }
 
-    int peek() const { // O(1)
+    // O(1)
+    int peek() const {
         if (isEmpty()) {
             throw std::runtime_error("Cannot peek in an empty stack");
         }
@@ -84,7 +87,8 @@ public:
         return first->value;
     }
 
-    bool isEmpty() const { // O(1)
+    // O(1)
+    bool isEmpty() const {
         return first == nullptr;
     }
 };

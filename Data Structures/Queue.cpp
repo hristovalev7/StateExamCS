@@ -46,25 +46,29 @@ public:
         deallocate();
     }
 
-    bool isEmpty() const { // O(1)
+    // O(1)
+    bool isEmpty() const {
         return first == nullptr;
     }
 
-    int getHead() const { // O(1)
+    // O(1)
+    int getHead() const {
         if (isEmpty()) {
             throw std::runtime_error("Cannot get the first element of an empty queue");
         }
         return first->value;
     }
 
-    int getLast() const { // O(1)
+    // O(1)
+    int getLast() const {
         if (isEmpty()) {
             throw std::runtime_error("Cannot get the last element of an empty queue");
         }
         return last->value;
     }
 
-    void enqueue(int x) { // O(1)
+    // O(1)
+    void enqueue(int x) {
         Node* newNode = new Node(x, nullptr);
         if (isEmpty()) {
             first = newNode;
@@ -75,7 +79,8 @@ public:
         last = newNode;
     }
 
-    int dequeue() { // O(1)
+    // O(1)
+    int dequeue() {
         if (isEmpty()) {
             throw std::runtime_error("Cannot dequeue from an empty queue");
         }
