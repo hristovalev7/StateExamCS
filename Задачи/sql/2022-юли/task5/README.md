@@ -3,10 +3,12 @@
 ## Структура на базата данни
 
 **Studio** - информация за филмови студиа:
+
 - `name` — име (PRIMARY KEY)
 - `address` — адрес
 
 **Movie** - информация за филми:
+
 - `title` — заглавие (PRIMARY KEY)
 - `year` — година (PRIMARY KEY)
 - `length` — дължина в минути
@@ -14,12 +16,14 @@
 - `studioname` — име на студио (FOREIGN KEY към Studio.name)
 
 **MovieStar** - информация за филмови звезди:
+
 - `name` — име (PRIMARY KEY)
 - `address` — адрес
 - `gender` — пол ('M' или 'F')
 - `birthdate` — рождена дата
 
 **StarsIn** - участие на звезди във филми:
+
 - `movietitle` — заглавие на филм (PRIMARY KEY, FOREIGN KEY)
 - `movieyear` — година (PRIMARY KEY, FOREIGN KEY)
 - `starname` — име на звезда (PRIMARY KEY, FOREIGN KEY към MovieStar.name)
@@ -41,6 +45,7 @@ WHERE s.name = (SELECT studioname
 ```
 
 **Обяснение:**
+
 - `m` - алиас за таблицата movie
 - `= s.name` - условие за JOIN (свързваме movie.studioname със studio.name)
 - `=` или `IN` - оператор за сравнение (тук използваме `=`, защото очакваме един резултат)
@@ -54,6 +59,7 @@ WHERE s.name = (SELECT studioname
 Да се посочи коя от следните заявки извежда имената на филмовите звезди, за които няма информация в кои филми са играли:
 
 **А)**
+
 ```sql
 SELECT DISTINCT starname
 FROM starsin
@@ -62,6 +68,7 @@ HAVING COUNT(*) = 0;
 ```
 
 **Б)**
+
 ```sql
 SELECT ms.name, si.movietitle
 FROM moviestar ms
@@ -71,6 +78,7 @@ WHERE si.movietitle IS NULL;
 ```
 
 **В)**
+
 ```sql
 SELECT name
 FROM starsin
@@ -80,6 +88,7 @@ HAVING COUNT(name) = 0;
 ```
 
 **Г)**
+
 ```sql
 SELECT name
 FROM moviestar
@@ -97,23 +106,26 @@ WHERE NOT EXISTS (SELECT starname
 
 - **А) Грешна** - използва `starsin` като базова таблица, което означава, че взима само звезди, които ИМАТ записи в `starsin`. `COUNT(*) = 0` никога няма да е изпълнено за групирани редове.
 
-- **Б) Правилна** - използва `LEFT JOIN`, което включва ВСИЧКИ звезди от `moviestar`, дори тези без съответствие в `starsin`. Условието `WHERE si.movietitle IS NULL` филтрира само звездите без филми. *(Забележка: заявката връща и `si.movietitle`, но той винаги е NULL)*
+- **Б) Правилна** - използва `LEFT JOIN`, което включва ВСИЧКИ звезди от `moviestar`, дори тези без съответствие в `starsin`. Условието `WHERE si.movietitle IS NULL` филтрира само звездите без филми. _(Забележка: заявката връща и `si.movietitle`, но той винаги е NULL)_
 
 - **В) Грешна** - използва `JOIN` (inner join), което изключва звездите, които нямат записи в `starsin`. `HAVING COUNT(name) = 0` никога няма да е изпълнено.
 
 - **Г) Грешна** - `NOT EXISTS (SELECT starname FROM starsin)` проверява дали таблицата `starsin` е празна като цяло, не за конкретната звезда. Връща всички звезди само ако няма НИКАКВИ записи в `starsin`.
 
 **Правилна алтернатива:**
+
 ```sql
 SELECT name
 FROM moviestar
 WHERE name NOT IN (SELECT starname FROM starsin);
 ```
+
 или
+
 ```sql
 SELECT name
 FROM moviestar ms
-WHERE NOT EXISTS (SELECT 1 
-                  FROM starsin si 
+WHERE NOT EXISTS (SELECT 1
+                  FROM starsin si
                   WHERE si.starname = ms.name);
 ```
