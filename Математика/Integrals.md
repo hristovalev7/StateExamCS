@@ -19,18 +19,18 @@
 | --- | --- | --- |
 | $\sin x$ | $\displaystyle\int \sin x\,dx = -\cos x + C$ | Обратно на производната — тук се появява минус. |
 | $\cos x$ | $\displaystyle\int \cos x\,dx = \sin x + C$ | Косинус става синус, без минус. |
-| $\dfrac{1}{\cos^2 x}$ | $\displaystyle\int \dfrac{1}{\cos^2 x}\,dx = \operatorname{tg} x + C$ | Обратно на производната на тангенса. |
-| $\dfrac{1}{\sin^2 x}$ | $\displaystyle\int \dfrac{1}{\sin^2 x}\,dx = -\operatorname{ctg} x + C$ | Обратно на производната на котангенса. |
+| $\dfrac{1}{\cos^2 x}$ | $\displaystyle\int \dfrac{1}{\cos^2 x}\,dx = \mathrm{tg}\,x + C$ | Обратно на производната на тангенса. |
+| $\dfrac{1}{\sin^2 x}$ | $\displaystyle\int \dfrac{1}{\sin^2 x}\,dx = -\mathrm{ctg}\,x + C$ | Обратно на производната на котангенса. |
 
 ### Водещи до обратни тригонометрични
 | Функция | Интеграл | Кратко описание / Условие |
 | --- | --- | --- |
 | $\dfrac{1}{\sqrt{1-x^2}}$ | $\displaystyle\int \dfrac{1}{\sqrt{1-x^2}}\,dx = \arcsin x + C$ | За $-1 < x < 1$. Може и като $-\arccos x + C$. |
-| $\dfrac{1}{1+x^2}$ | $\displaystyle\int \dfrac{1}{1+x^2}\,dx = \operatorname{arctg} x + C$ | Може и като $-\operatorname{arcctg} x + C$. |
-| $\dfrac{1}{a^2+x^2}$ | $\displaystyle\int \dfrac{1}{a^2+x^2}\,dx = \dfrac{1}{a}\operatorname{arctg}\dfrac{x}{a} + C$ | Обобщение с параметър $a \neq 0$. |
+| $\dfrac{1}{1+x^2}$ | $\displaystyle\int \dfrac{1}{1+x^2}\,dx = \mathrm{arctg}\,x + C$ | Може и като $-\mathrm{arcctg}\,x + C$. |
+| $\dfrac{1}{a^2+x^2}$ | $\displaystyle\int \dfrac{1}{a^2+x^2}\,dx = \dfrac{1}{a}\mathrm{arctg}\,\dfrac{x}{a} + C$ | Обобщение с параметър $a \neq 0$. |
 | $\dfrac{1}{\sqrt{a^2-x^2}}$ | $\displaystyle\int \dfrac{1}{\sqrt{a^2-x^2}}\,dx = \arcsin\dfrac{x}{a} + C$ | Обобщение с параметър $a > 0$, за $\lvert x\rvert < a$. |
 
-### Свойства (неопределен интеграл)
+### Свойства на неопределен интеграл
 | Свойство | Формула | Кратко описание / Условие |
 | --- | --- | --- |
 | **Константа** | $\displaystyle\int c\cdot f(x)\,dx = c\int f(x)\,dx$ | Числовата константа се изнася пред интеграла. |
