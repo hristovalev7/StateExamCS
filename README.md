@@ -98,7 +98,7 @@
 - [Теми ДИ - unknown](https://drive.google.com/drive/u/1/folders/1r8AHdEI61aCm6tbdDdu7S89h25EY6OKe)
 - [Теми и Задачи ДИ - Дони](https://github.com/donivanev/State-Exam/blob/main/Theory/CS_FUND.pdf)
 
-Ако искате още материали вижте и тези:
+Ако искаш още материали виж и тези:
 
 - [Tеми ДИ - unknown(2017)](https://drive.google.com/drive/u/3/folders/1ZScdbUNaekZOZKRLO89pUbcSz2X8pY8d)
 - [Теми ДИ - Яна(2019)](https://drive.google.com/drive/folders/1QPIE9Ypy1AFJcLqwi8Z_uOd0hhskHODG)
