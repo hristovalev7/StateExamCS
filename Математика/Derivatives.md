@@ -18,16 +18,16 @@
 | --- | --- | --- |
 | $\sin x$ | $(\sin x)' = \cos x$ | Синус става косинус, без промяна на знака. |
 | $\cos x$ | $(\cos x)' = -\sin x$ | Косинус става синус, но с минус отпред. |
-| $\operatorname{tg} x$ | $(\operatorname{tg} x)' = \dfrac{1}{\cos^2 x}$ | Дефинирана за $x \neq \dfrac{\pi}{2} + k\pi$. Може и като $1 + \operatorname{tg}^2 x$. |
-| $\operatorname{ctg} x$ | $(\operatorname{ctg} x)' = -\dfrac{1}{\sin^2 x}$ | Дефинирана за $x \neq k\pi$. Може и като $-(1 + \operatorname{ctg}^2 x)$. |
+| $\mathrm{tg}\,x$ | $(\mathrm{tg}\,x)' = \dfrac{1}{\cos^2 x}$ | Дефинирана за $x \neq \dfrac{\pi}{2} + k\pi$. Може и като $1 + \mathrm{tg}^2\,x$. |
+| $\mathrm{ctg}\,x$ | $(\mathrm{ctg}\,x)' = -\dfrac{1}{\sin^2 x}$ | Дефинирана за $x \neq k\pi$. Може и като $-(1 + \mathrm{ctg}^2\,x)$. |
 
 ### Обратни тригонометрични функции
 | Функция | Производна | Кратко описание / Условие |
 | --- | --- | --- |
 | $\arcsin x$ | $(\arcsin x)' = \dfrac{1}{\sqrt{1-x^2}}$ | Дефинирана за $-1 < x < 1$. |
 | $\arccos x$ | $(\arccos x)' = -\dfrac{1}{\sqrt{1-x^2}}$ | Същата като на $\arcsin$, но с минус. За $-1 < x < 1$. |
-| $\operatorname{arctg} x$ | $(\operatorname{arctg} x)' = \dfrac{1}{1+x^2}$ | Дефинирана за всяко реално $x$. |
-| $\operatorname{arcctg} x$ | $(\operatorname{arcctg} x)' = -\dfrac{1}{1+x^2}$ | Като на $\operatorname{arctg}$, но с минус. |
+| $\mathrm{arctg}\,x$ | $(\mathrm{arctg}\,x)' = \dfrac{1}{1+x^2}$ | Дефинирана за всяко реално $x$. |
+| $\mathrm{arcctg}\,x$ | $(\mathrm{arcctg}\,x)' = -\dfrac{1}{1+x^2}$ | Като на $\mathrm{arctg}$, но с минус. |
 
 ### Степенни функции и корени
 | Функция | Производна | Кратко описание / Условие |
