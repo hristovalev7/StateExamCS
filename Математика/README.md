@@ -11,14 +11,14 @@
 # Как се смятат детерминанти?
 - 1x1 - тривиално е, колега
 - 2x2
-   ![](Sarrus/2x2.svg)
+   ![](Determinant/2x2.svg)
 - 3x3
   - Сарус (триъгълници)
-    ![](Sarrus/sarrus1.svg)
+    ![](Determinant/sarrus1.svg)
   - Сарус (разширение)
-    ![](Sarrus/sarrus2.svg)
+    ![](Determinant/sarrus2.svg)
   - Адюнгирани количества
-    ![](Sarrus/cofactor.svg)
+    ![](Determinant/cofactor.svg)
 
 # Как се смятат производни?
 | Правило | Формула | Кратко описание / Условие |
