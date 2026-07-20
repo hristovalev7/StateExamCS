@@ -120,7 +120,8 @@ public:
         return false;
     }
 
-    bool isEmpty() const { // O(1)
+    // O(1)
+    bool isEmpty() const {
         return first == nullptr;
     }
 };
